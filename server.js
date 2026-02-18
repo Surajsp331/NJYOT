@@ -25,10 +25,14 @@ app.use(session({
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = path.join(__dirname, 'public/uploads');
-    if (!fs.existsSync(uploadDir)) {
+    // On Vercel, utilize the /tmp directory as it's the only writable location
+    const uploadDir = process.env.VERCEL ? '/tmp' : path.join(__dirname, 'public/uploads');
+
+    // Create directory if it doesn't exist (only locally)
+    if (!process.env.VERCEL && !fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
+
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
@@ -463,13 +467,23 @@ app.get('/api/settings', (req, res) => {
   res.json(settings);
 });
 
-// Initialize database and start server
-initDatabase().then(() => {
+// Initialize database
+try {
+  initDatabase();
+  console.log('Database initialized');
+} catch (err) {
+  console.error('Failed to initialize database:', err);
+  if (!process.env.VERCEL) process.exit(1);
+}
+
+// Start server
+if (process.env.VERCEL) {
+  // Export for Vercel
+  module.exports = app;
+} else {
+  // Local development
   app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
     console.log(`Admin panel at http://localhost:${PORT}/admin`);
   });
-}).catch(err => {
-  console.error('Failed to initialize database:', err);
-  process.exit(1);
-});
+}
