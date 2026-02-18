@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product - NJYOT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo"><span class="site-name">NJYOT</span></a>
+        <nav class="nav-links">
+          <a href="/">Home</a>
+          <a href="/products">Shop</a>
+          <a href="/products?category=necklaces">Necklaces</a>
+          <a href="/products?category=earrings">Earrings</a>
+          <a href="/tracking">Track Order</a>
+        </nav>
+        <div class="header-icons">
+          <a href="/cart" class="icon-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+            </svg>
+            <span class="cart-badge">0</span>
+          </a>
+          <button class="mobile-menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Product Detail -->
+  <section class="product-detail">
+    <div class="container">
+      <div class="product-detail-grid">
+        <div class="product-gallery">
+          <div class="main-image">
+            <img id="main-image" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop" alt="Product">
+          </div>
+        </div>
+        <div class="product-detail-info" id="product-info">
+          <!-- Loaded dynamically -->
+          <div class="loading"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- Related Products -->
+      <div style="margin-top: 80px;">
+        <h2 style="margin-bottom: 40px;">Related Products</h2>
+        <div class="products-grid" id="related-products">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo"><span class="site-name">NJYOT</span></a>
+          <p>Your destination for premium artificial jewelry.</p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/products">Shop</a></li>
+            <li><a href="/tracking">Track Order</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="footer-links">
+            <li class="contact-email">Email: info.njyot@gmail.com</li>
+            <li class="contact-phone">Phone: +91 9876543210</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 NJYOT. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script>
+    let currentProduct = null;
+    let quantity = 1;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const slug = window.location.pathname.split('/').pop();
+      await loadProduct(slug);
+    });
+
+    async function loadProduct(slug) {
+      try {
+        const response = await fetch(`/api/products?search=${slug}`);
+        const products = await response.json();
+        const product = products.find(p => p.slug === slug);
+
+        if (!product) {
+          document.getElementById('product-info').innerHTML = '<p>Product not found</p>';
+          return;
+        }
+
+        currentProduct = product;
+        const price = product.sale_price || product.price;
+        const originalPrice = product.sale_price ? product.price : null;
+
+        document.getElementById('main-image').src = product.image || 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop';
+
+        document.getElementById('product-info').innerHTML = `
+          <p class="product-category">${product.category_name || ''}</p>
+          <h1>${product.name}</h1>
+          <div class="product-detail-price">
+            <span class="current-price">₹${price.toLocaleString('en-IN')}</span>
+            ${originalPrice ? `<span class="original-price">₹${originalPrice.toLocaleString('en-IN')}</span>` : ''}
+          </div>
+          <p class="product-description">${product.description || 'No description available.'}</p>
+          <div class="product-options">
+            <div class="option-group">
+              <label>Quantity</label>
+              <div class="quantity-selector">
+                <button class="quantity-btn" onclick="updateQuantity(-1)">-</button>
+                <span class="quantity-value" id="quantity-value">1</span>
+                <button class="quantity-btn" onclick="updateQuantity(1)">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="product-actions-detail">
+            <button class="btn btn-primary" onclick="addToCartFromDetail()">Add to Cart</button>
+            <button class="btn btn-secondary" onclick="buyNow()">Buy Now</button>
+          </div>
+          <div class="product-meta">
+            <div class="meta-item">
+              <span class="meta-label">SKU</span>
+              <span class="meta-value">LA-${product.id.toString().padStart(4, '0')}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Category</span>
+              <span class="meta-value">${product.category_name || 'Uncategorized'}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Stock</span>
+              <span class="meta-value">${product.stock > 0 ? 'In Stock (' + product.stock + ')' : 'Out of Stock'}</span>
+            </div>
+          </div>
+        `;
+
+        // Load related products
+        loadRelatedProducts(product.category_id, product.id);
+      } catch (error) {
+        console.error('Error loading product:', error);
+      }
+    }
+
+    async function loadRelatedProducts(categoryId, currentId) {
+      try {
+        const response = await fetch(`/api/products?category=${categoryId}`);
+        const products = await response.json();
+
+        const related = products.filter(p => p.id !== currentId).slice(0, 4);
+        const container = document.getElementById('related-products');
+
+        container.innerHTML = related.map(product => {
+          const price = product.sale_price || product.price;
+          const originalPrice = product.sale_price ? product.price : null;
+
+          return `
+            <div class="product-card" data-product-id="${product.id}">
+              <div class="product-image">
+                <img src="${product.image || 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop'}" alt="${product.name}">
+                ${product.sale_price ? '<span class="product-badge">Sale</span>' : ''}
+              </div>
+              <div class="product-info">
+                <p class="product-category">${product.category_name || ''}</p>
+                <a href="/product/${product.slug}"><h3 class="product-title">${product.name}</h3></a>
+                <div class="product-price">
+                  <span class="current-price">₹${price.toLocaleString('en-IN')}</span>
+                  ${originalPrice ? `<span class="original-price">₹${originalPrice.toLocaleString('en-IN')}</span>` : ''}
+                </div>
+                <button class="add-to-cart-btn">Add to Cart</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        initProductCards();
+      } catch (error) {
+        console.error('Error loading related products:', error);
+      }
+    }
+
+    function updateQuantity(delta) {
+      quantity = Math.max(1, quantity + delta);
+      document.getElementById('quantity-value').textContent = quantity;
+    }
+
+    async function addToCartFromDetail() {
+      if (!currentProduct) return;
+      await addToCart(currentProduct.id, quantity);
+    }
+
+    async function buyNow() {
+      await addToCartFromDetail();
+      window.location.href = '/checkout';
+    }
+  </script>
+</body>
+</html>

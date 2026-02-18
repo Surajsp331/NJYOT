@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - NJYOT Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2 class="logo">NJYOT <span>Admin</span></h2>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="/admin" class="nav-link">Dashboard</a>
+        <a href="/admin/products" class="nav-link">Products</a>
+        <a href="/admin/orders" class="nav-link">Orders</a>
+        <a href="/admin/settings" class="nav-link active">Settings</a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="btn-logout" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1>Website Settings</h1>
+      </div>
+
+      <div class="settings-container">
+        <div class="settings-section">
+          <h3>General Settings</h3>
+          <form id="settingsForm">
+            <div class="form-group">
+              <label>Website Name</label>
+              <input type="text" name="site_name" placeholder="Enter website name">
+            </div>
+
+            <div class="form-group">
+              <label>Contact Phone Number</label>
+              <input type="text" name="contact_phone" placeholder="+91 9876543210">
+              <small>This phone number will be displayed on the website</small>
+            </div>
+
+            <div class="form-group">
+              <label>Contact Email</label>
+              <input type="email" name="contact_email" placeholder="info.njyot@gmail.com">
+            </div>
+
+            <div class="form-group">
+              <label>Contact Address</label>
+              <textarea name="contact_address" rows="3" placeholder="Enter your address"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Settings</button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/admin.js"></script>
+  <script>
+    // Load settings on page load
+    async function loadSettings() {
+      try {
+        const response = await fetch('/api/admin/settings');
+        const settings = await response.json();
+
+        document.querySelector('input[name="site_name"]').value = settings.site_name || '';
+        document.querySelector('input[name="contact_phone"]').value = settings.contact_phone || '';
+        document.querySelector('input[name="contact_email"]').value = settings.contact_email || '';
+        document.querySelector('textarea[name="contact_address"]').value = settings.contact_address || '';
+      } catch (error) {
+        console.error('Error loading settings:', error);
+      }
+    }
+
+    // Save settings
+    document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const saveBtn = e.target.querySelector('button[type="submit"]');
+      saveBtn.textContent = 'Saving...';
+      saveBtn.disabled = true;
+
+      try {
+        for (const [key, value] of formData.entries()) {
+          await fetch('/api/admin/settings', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key, value })
+          });
+        }
+        alert('Settings saved successfully!');
+      } catch (error) {
+        console.error('Error saving settings:', error);
+        alert('Error saving settings');
+      } finally {
+        saveBtn.textContent = 'Save Settings';
+        saveBtn.disabled = false;
+      }
+    });
+
+    loadSettings();
+  </script>
+</body>
+</html>

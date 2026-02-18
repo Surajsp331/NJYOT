@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - NJYOT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo"><span class="site-name">NJYOT</span></a>
+        <nav class="nav-links">
+          <a href="/">Home</a>
+          <a href="/products">Shop</a>
+          <a href="/tracking">Track Order</a>
+        </nav>
+        <div class="header-icons">
+          <a href="/cart" class="icon-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+            </svg>
+            <span class="cart-badge">0</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Checkout Page -->
+  <section class="checkout-page">
+    <div class="container">
+      <div class="page-header" style="padding: 40px 0; min-height: auto; background: transparent;">
+        <h1>Checkout</h1>
+        <p class="breadcrumb"><a href="/">Home</a> / Cart / Checkout</p>
+      </div>
+
+      <form class="checkout-layout checkout-form">
+        <div class="checkout-form">
+          <div class="form-section">
+            <h3>Shipping Information</h3>
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" name="name" required placeholder="Enter your full name">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Email Address *</label>
+                <input type="email" name="email" required placeholder="Enter your email">
+              </div>
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" placeholder="Enter your phone number">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Shipping Address *</label>
+              <textarea name="address" required placeholder="Enter your full shipping address" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Payment Method</h3>
+            <div class="form-group">
+              <label>
+                <input type="radio" name="payment_method" value="cod" checked> Cash on Delivery
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" name="payment_method" value="online"> Online Payment (Coming Soon)
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Place Order</button>
+        </div>
+
+        <div class="order-summary">
+          <h3>Order Summary</h3>
+          <div class="order-items">
+            <!-- Order items loaded dynamically -->
+          </div>
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span class="amount summary-subtotal">₹0</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span class="amount">Free</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span class="amount">₹0</span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2024 NJYOT. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script src="/js/cart.js"></script>
+</body>
+</html>
