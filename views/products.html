@@ -11,6 +11,8 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/products-page.css">
+  <link rel="stylesheet" href="/css/notification.css">
 </head>
 
 <body>
@@ -72,7 +74,10 @@
               <input type="number" placeholder="Max" id="price-max">
             </div>
           </div>
-          <button class="btn btn-primary" style="width: 100%;" onclick="applyFilters()">Apply Filters</button>
+          <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="applyFilters()">Apply
+            Filters</button>
+          <button class="btn btn-secondary" style="width: 100%; border-color: #e2e8f0; color: #64748b;"
+            onclick="clearFilters()">Clear Filters</button>
         </aside>
 
         <!-- Main Content -->
@@ -246,6 +251,28 @@
       if (currentFilters.search) params.set('search', currentFilters.search);
 
       const newUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;
+      window.history.pushState({}, '', newUrl);
+
+      loadProducts();
+    }
+
+    function clearFilters() {
+      // Clear radio inputs
+      const radios = document.querySelectorAll('input[name="category"]');
+      radios.forEach(r => r.checked = false);
+      currentFilters.category = '';
+
+      // Clear price inputs
+      document.getElementById('price-min').value = '';
+      document.getElementById('price-max').value = '';
+
+      // Clear sort (optional) - let's keep it or reset it? Let's reset.
+      document.getElementById('sort-select').value = '';
+      currentFilters.sort = '';
+
+      // Reset search params
+      const params = new URLSearchParams();
+      const newUrl = window.location.pathname;
       window.history.pushState({}, '', newUrl);
 
       loadProducts();

@@ -271,84 +271,29 @@ function showNotification(message, type = 'success') {
   const notification = document.createElement('div');
   notification.className = `notification notification-${type}`;
 
-  let actionHtml = '';
   if (type === 'success' && message.toLowerCase().includes('cart')) {
-    actionHtml = `<a href="/cart" class="notification-action">Checkout</a>`;
-  }
-
-  notification.innerHTML = `
-    <div class="notification-content">
-      <span>${message}</span>
-      ${actionHtml}
-      <button class="notification-close">&times;</button>
-    </div>
-  `;
-
-  // Add styles dynamically if not in CSS
-  notification.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 9999;
-    padding: 16px 24px;
-    background: ${type === 'success' ? '#0F172A' : '#EF4444'};
-    color: white;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    animation: slideIn 0.3s ease forwards;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border: 1px solid rgba(255,255,255,0.1);
-  `;
-
-  if (type === 'success') {
-    notification.style.borderLeft = '4px solid #D4AF37';
+    notification.innerHTML = `
+        <div class="notification-content">
+            <span>${message}</span>
+            <a href="/cart" class="notification-action">Checkout</a>
+            <button class="notification-close" onclick="this.parentElement.parentElement.remove()">&times;</button>
+        </div>
+      `;
+  } else {
+    notification.innerHTML = `
+        <div class="notification-content">
+            <span>${message}</span>
+            <button class="notification-close" onclick="this.parentElement.parentElement.remove()">&times;</button>
+        </div>
+      `;
   }
 
   document.body.appendChild(notification);
 
-  // Style the action button
-  const actionBtn = notification.querySelector('.notification-action');
-  if (actionBtn) {
-    actionBtn.style.cssText = `
-      background: #D4AF37;
-      color: #0F172A;
-      padding: 6px 14px;
-      border-radius: 20px;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 700;
-      margin-left: 10px;
-      transition: all 0.2s;
-    `;
-    actionBtn.onmouseover = () => { actionBtn.style.background = '#F3E5AB'; };
-    actionBtn.onmouseout = () => { actionBtn.style.background = '#D4AF37'; };
-  }
-
-  // Style close button
-  const closeBtn = notification.querySelector('.notification-close');
-  closeBtn.style.cssText = `
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.6);
-    cursor: pointer;
-    font-size: 20px;
-    margin-left: 8px;
-    display: flex;
-    align-items: center;
-  `;
-  closeBtn.onmouseover = () => { closeBtn.style.color = '#fff'; };
-
-  // Close button action
-  closeBtn.addEventListener('click', () => {
-    notification.remove();
-  });
-
   // Auto remove
   setTimeout(() => {
-    notification.remove();
-  }, 5000);
+    if (notification.parentElement) notification.remove();
+  }, 4000);
 }
 
 // Add slideIn animation
