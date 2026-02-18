@@ -78,7 +78,7 @@ function createNewDatabase() {
     { key: 'site_logo', value: '' },
     { key: 'contact_phone', value: '+91 9876543210' },
     { key: 'contact_email', value: 'info.njyot@gmail.com' },
-    { key: 'contact_address', value: 'Mumbai, Maharashtra, India' }
+    { key: 'contact_address', value: 'Faridabad, Haryana, 121014' }
   ];
 
   return {
