@@ -1,5 +1,25 @@
 // Admin Panel JavaScript
 
+// Get admin token from URL or localStorage
+function getAdminToken() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlToken = urlParams.get('token');
+  if (urlToken) {
+    localStorage.setItem('adminToken', urlToken);
+    return urlToken;
+  }
+  return localStorage.getItem('adminToken');
+}
+
+// Get auth headers
+function getAuthHeaders() {
+  const token = getAdminToken();
+  if (token) {
+    return { 'Authorization': 'Bearer ' + token };
+  }
+  return {};
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // Check if we're on admin pages
   if (window.location.pathname.includes('/admin')) {
@@ -26,7 +46,7 @@ async function checkAuth() {
   if (window.location.pathname === '/admin/login') return;
 
   try {
-    const response = await fetch('/api/admin/stats');
+    const response = await fetch('/api/admin/stats', { headers: getAuthHeaders() });
     if (response.status === 401) {
       window.location.href = '/admin/login';
     }
@@ -73,7 +93,11 @@ function initLogin() {
 // Logout
 async function logout() {
   try {
-    await fetch('/admin/logout', { method: 'POST' });
+    await fetch('/admin/logout', {
+      method: 'POST',
+      headers: getAuthHeaders()
+    });
+    localStorage.removeItem('adminToken');
     window.location.href = '/admin/login';
   } catch (error) {
     console.error('Logout error:', error);
@@ -87,7 +111,7 @@ async function initDashboard() {
 
 async function loadStats() {
   try {
-    const response = await fetch('/api/admin/stats');
+    const response = await fetch('/api/admin/stats', { headers: getAuthHeaders() });
     const stats = await response.json();
 
     // Update stat cards
@@ -122,7 +146,7 @@ async function initProducts() {
 
 async function loadProducts() {
   try {
-    const response = await fetch('/api/admin/products');
+    const response = await fetch('/api/admin/products', { headers: getAuthHeaders() });
     const products = await response.json();
 
     const tbody = document.querySelector('.products-table tbody');
@@ -186,7 +210,8 @@ async function deleteProduct(id) {
 
   try {
     const response = await fetch(`/api/admin/products/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: getAuthHeaders()
     });
 
     const data = await response.json();
@@ -208,7 +233,7 @@ async function initOrders() {
 
 async function loadOrders() {
   try {
-    const response = await fetch('/api/admin/orders');
+    const response = await fetch('/api/admin/orders', { headers: getAuthHeaders() });
     const orders = await response.json();
 
     const tbody = document.querySelector('.orders-table tbody');
@@ -318,7 +343,7 @@ async function updateOrderStatus(status) {
   try {
     const response = await fetch(`/api/admin/orders/${orderId}/status`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
       body: JSON.stringify({ status })
     });
 
@@ -362,6 +387,7 @@ async function initProductForm() {
     try {
       const response = await fetch(url, {
         method,
+        headers: getAuthHeaders(),
         body: formData
       });
 
@@ -401,7 +427,7 @@ async function initProductForm() {
 
 async function loadCategories() {
   try {
-    const response = await fetch('/api/admin/categories');
+    const response = await fetch('/api/admin/categories', { headers: getAuthHeaders() });
     const categories = await response.json();
 
     const select = document.querySelector('[name="category_id"]');

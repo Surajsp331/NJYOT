@@ -258,15 +258,20 @@ app.get('/admin/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin', 'login.html'));
 });
 
-// Admin login
+// Simple token storage (in-memory for Vercel)
+let adminTokens = {};
+
+// Admin login - returns a token
 app.post('/admin/login', (req, res) => {
   const { username, password } = req.body;
 
   const admin = getRow('SELECT * FROM admin_users WHERE username = ?', [username]);
 
   if (admin && require('bcryptjs').compareSync(password, admin.password)) {
-    req.session.adminUser = admin;
-    res.json({ success: true });
+    // Generate a simple token
+    const token = Buffer.from(`${admin.id}:${Date.now()}`).toString('base64');
+    adminTokens[token] = { adminId: admin.id, username: admin.username, createdAt: Date.now() };
+    res.json({ success: true, token: token });
   } else {
     res.status(401).json({ error: 'Invalid credentials' });
   }
@@ -274,16 +279,47 @@ app.post('/admin/login', (req, res) => {
 
 // Admin logout
 app.post('/admin/logout', (req, res) => {
-  req.session.adminUser = null;
+  const token = req.headers.authorization?.replace('Bearer ', '');
+  if (token && adminTokens[token]) {
+    delete adminTokens[token];
+  }
   res.json({ success: true });
 });
 
-// Admin middleware
+// Verify admin token
+function verifyAdminToken(token) {
+  if (!token || !adminTokens[token]) return null;
+  return adminTokens[token];
+}
+
+// Clean up expired tokens (older than 24 hours)
+setInterval(() => {
+  const now = Date.now();
+  Object.keys(adminTokens).forEach(token => {
+    if (now - adminTokens[token].createdAt > 24 * 60 * 60 * 1000) {
+      delete adminTokens[token];
+    }
+  });
+}, 60 * 60 * 1000); // Clean every hour
+
+// Admin middleware - supports both session and token
 const requireAdmin = (req, res, next) => {
-  if (!req.session.adminUser) {
-    return res.redirect('/admin/login');
+  // Check for token in header or query
+  const token = req.headers.authorization?.replace('Bearer ', '') || req.query.adminToken;
+  const admin = verifyAdminToken(token);
+
+  if (admin) {
+    req.adminUser = admin;
+    return next();
   }
-  next();
+
+  // Fallback to session (for local development)
+  if (req.session && req.session.adminUser) {
+    req.adminUser = req.session.adminUser;
+    return next();
+  }
+
+  return res.redirect('/admin/login');
 };
 
 // Admin dashboard
