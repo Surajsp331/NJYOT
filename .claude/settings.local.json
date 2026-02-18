@@ -6,7 +6,15 @@
       "Bash(for:*)",
       "Bash(do sed:*)",
       "Bash(done:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(git branch -M main)",
+      "Bash(git push:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(npm install:*)",
+      "WebFetch(domain:minimax-algeng-chat-tts-us.oss-us-east-1.aliyuncs.com)",
+      "Bash(vercel:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }

@@ -9,7 +9,10 @@ let db = null;
 
 // Initialize database
 async function initDatabase() {
-  const SQL = await initSqlJs();
+  // Configure sql.js to load WASM file correctly in Vercel
+  const SQL = await initSqlJs({
+    locateFile: file => `https://sql.js.org/dist/${file}`
+  });
 
   // Try to load existing database
   let data = null;
