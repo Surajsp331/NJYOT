@@ -109,17 +109,23 @@ function openQuickShop(product) {
     document.getElementById('quickShopDiscount').style.display = 'none';
   }
 
-  // Generate color options
-  const colors = ['Gold', 'Silver', 'Rose Gold', 'Antique'];
+  // Generate color options with better visual representation
+  const colors = [
+    { name: 'Gold', hex: '#FFD700' },
+    { name: 'Silver', hex: '#C0C0C0' },
+    { name: 'Rose Gold', hex: '#B76E79' },
+    { name: 'Antique', hex: '#8B7355' }
+  ];
   const colorOptionsHTML = colors.map((color, index) => `
     <div class="color-option ${index === 0 ? 'active' : ''}"
-         style="background: ${getColorHex(color)}"
-         onclick="selectColor('${color}')"
-         title="${color}">
+         style="background: linear-gradient(135deg, ${color.hex} 0%, ${color.hex}dd 100%)"
+         onclick="selectColor('${color.name}')"
+         title="${color.name}">
+      <span class="color-name">${color.name}</span>
     </div>
   `).join('');
   document.getElementById('colorOptions').innerHTML = colorOptionsHTML;
-  selectedColor = colors[0];
+  selectedColor = colors[0].name;
 
   // Generate size options
   const sizes = ['One Size', '6', '7', '8'];
