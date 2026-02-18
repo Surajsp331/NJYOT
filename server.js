@@ -288,31 +288,38 @@ app.get('/api/categories', (req, res) => {
   res.json(categories);
 });
 
-// ============ ADMIN ROUTES (With Middleware) ============
+// ============ ADMIN ROUTES (SPA Pattern - Auth handled by client-side JS) ============
 
-app.get('/admin', requireAdmin, (req, res) => {
+// Admin Dashboard (HTML)
+app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin', 'dashboard.html'));
 });
 
-app.get('/admin/products', requireAdmin, (req, res) => {
+// Admin Products (HTML)
+app.get('/admin/products', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin', 'products.html'));
 });
 
-app.get('/admin/orders', requireAdmin, (req, res) => {
+// Admin Orders (HTML)
+app.get('/admin/orders', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin', 'orders.html'));
 });
 
-app.get('/admin/settings', requireAdmin, (req, res) => {
+// Admin Settings (HTML)
+app.get('/admin/settings', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin', 'settings.html'));
 });
 
-app.get('/admin/products/new', requireAdmin, (req, res) => {
+// Admin Product Forms (HTML)
+app.get('/admin/products/new', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin', 'product-form.html'));
 });
 
-app.get('/admin/products/:id/edit', requireAdmin, (req, res) => {
+app.get('/admin/products/:id/edit', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin', 'product-form.html'));
 });
+
+// ============ ADMIN API ROUTES (Protected) ============
 
 app.get('/api/admin/products', requireAdmin, (req, res) => {
   const products = getAll(`
@@ -443,6 +450,7 @@ try {
 if (process.env.VERCEL) {
   module.exports = app;
 } else {
+  // Use a different port if 3000 is stubborn, but try 3000 first
   app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
     console.log(`Admin panel at http://localhost:${PORT}/admin`);

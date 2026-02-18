@@ -7,8 +7,67 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initCart();
   initNewsletter();
-  initProductCards();
+
+  // Check if we are on the homepage
+  if (document.getElementById('featured-products')) {
+    loadFeaturedProducts();
+  } else {
+    initProductCards(); // For other pages that might have static cards
+  }
 });
+
+// Load Featured Products
+async function loadFeaturedProducts() {
+  try {
+    const response = await fetch('/api/products?featured=true');
+    const products = await response.json();
+    const container = document.getElementById('featured-products');
+
+    if (!container) return;
+
+    if (products.length === 0) {
+      container.innerHTML = '<p class="no-products">No featured products found.</p>';
+      return;
+    }
+
+    container.innerHTML = products.slice(0, 8).map(product => `
+      <div class="product-card" data-product-id="${product.id}">
+        <div class="product-image">
+          <img src="${product.image || 'https://via.placeholder.com/300'}" alt="${product.name}" loading="lazy">
+          <span class="product-badge">New</span>
+          <div class="product-actions">
+            <button class="product-action-btn quick-add" title="Add to Cart">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </button>
+            <a href="/product/${product.slug}" class="product-action-btn" title="View Details">
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-category">${product.category_name || 'Jewelry'}</p>
+          <h3 class="product-title"><a href="/product/${product.slug}">${product.name}</a></h3>
+          <div class="product-price">
+            <span class="current-price">₹${product.price.toLocaleString('en-IN')}</span>
+            ${product.sale_price ? `<span class="original-price">₹${product.sale_price.toLocaleString('en-IN')}</span>` : ''}
+          </div>
+          <button class="add-to-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+    `).join('');
+
+    // Initialize event listeners for the new cards
+    initProductCards();
+
+  } catch (error) {
+    console.error('Error loading featured products:', error);
+  }
+}
 
 // Load site settings from server
 async function loadSiteSettings() {
@@ -164,6 +223,10 @@ function initProductCards() {
   const cards = document.querySelectorAll('.product-card');
 
   cards.forEach(card => {
+    // Avoid double binding
+    if (card.dataset.initialized === 'true') return;
+    card.dataset.initialized = 'true';
+
     const addToCartBtn = card.querySelector('.add-to-cart-btn');
     const quickAddBtn = card.querySelector('.quick-add');
 
