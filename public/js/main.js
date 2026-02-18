@@ -154,6 +154,11 @@ async function addToCart(productId, quantity = 1) {
   }
 }
 
+// Add to cart from product card
+async function addToCartFromCard(productId) {
+  await addToCart(productId, 1);
+}
+
 // Product Cards
 function initProductCards() {
   const cards = document.querySelectorAll('.product-card');
