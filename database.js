@@ -17,8 +17,10 @@ let db = {
 
 // Load or initialize database
 function initDatabase() {
-  // Try to load existing database
-  if (fs.existsSync(DB_PATH)) {
+  // Try to load existing database (only works locally, not on Vercel)
+  const isVercel = !fs.existsSync(DB_PATH) || process.env.VERCEL;
+
+  if (!isVercel && fs.existsSync(DB_PATH)) {
     try {
       const data = fs.readFileSync(DB_PATH, 'utf8');
       db = JSON.parse(data);
@@ -30,7 +32,11 @@ function initDatabase() {
     db = createNewDatabase();
   }
 
-  saveDatabase();
+  // Only save locally, not on Vercel
+  if (!process.env.VERCEL) {
+    saveDatabase();
+  }
+
   console.log('Database initialized successfully');
   return db;
 }
@@ -96,8 +102,10 @@ function createNewDatabase() {
   };
 }
 
-// Save database to file
+// Save database to file (only works locally)
 function saveDatabase() {
+  if (process.env.VERCEL) return; // Don't save on Vercel
+
   try {
     fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2));
   } catch (error) {
