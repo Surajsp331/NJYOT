@@ -4,83 +4,89 @@ import { useCart } from "@/lib/cart-context";
 import Link from "next/link";
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
+  const { cart, removeFromCart, updateQuantity, cartTotal } = useCart();
 
   const shippingThreshold = 999;
   const isFreeShipping = cartTotal >= shippingThreshold;
   const remainingForFreeShipping = shippingThreshold - cartTotal;
+  const progressPercent = Math.min(100, (cartTotal / shippingThreshold) * 100);
 
   return (
-    <div className="min-h-screen bg-offwhite">
+    <div className="min-h-screen bg-offwhite pb-24">
       {/* Hero */}
-      <div className="bg-charcoal text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="font-heading text-3xl md:text-4xl font-bold mb-2">Your Cart</h1>
-          <p className="text-gray-300">{cart.length} item{cart.length !== 1 ? "s" : ""}</p>
+      <div className="bg-charcoal text-white py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <span className="text-[10px] text-secondary font-bold uppercase tracking-[0.4em] mb-4 block animate-fade-up">Bag</span>
+          <h1 className="font-heading text-4xl md:text-6xl font-bold mb-4">Your Selection</h1>
+          <div className="w-12 h-1 bg-secondary mx-auto"></div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
         {cart.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-gray-500 text-lg mb-4">Your cart is empty</p>
-            <Link href="/shop" className="btn-primary">
-              Continue Shopping
+          <div className="bg-white rounded-[3rem] p-24 text-center shadow-xl border border-gray-100">
+            <span className="text-6xl mb-8 block">✨</span>
+            <p className="font-heading text-2xl text-charcoal mb-8">Your collection is currently empty.</p>
+            <Link href="/shop" className="btn-primary inline-flex">
+              Explore The Boutique
             </Link>
           </div>
         ) : (
-          <div className="grid lg:grid-cols-3 gap-12">
+          <div className="grid lg:grid-cols-3 gap-16">
             {/* Cart Items */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-8">
               {cart.map((item, index) => (
                 <div
                   key={`${item.id}-${item.variant}-${index}`}
-                  className="bg-white rounded-2xl p-6 shadow-sm flex gap-6"
+                  className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-50 flex flex-col sm:flex-row gap-8 hover:shadow-xl transition-all"
                 >
-                  {/* Image */}
-                  <div className="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center text-4xl flex-shrink-0">
+                  {/* Image/Emoji */}
+                  <div className="w-32 h-32 bg-offwhite rounded-[2rem] flex items-center justify-center text-5xl flex-shrink-0 border border-gray-100 shadow-inner">
                     {item.emoji}
                   </div>
 
                   {/* Details */}
                   <div className="flex-1">
-                    <div className="flex justify-between items-start">
+                    <div className="flex justify-between items-start mb-4">
                       <div>
                         <Link
                           href={`/product/${item.slug}`}
-                          className="font-heading font-semibold text-lg text-charcoal hover:text-primary"
+                          className="font-heading font-bold text-xl text-charcoal hover:text-secondary transition-colors"
                         >
                           {item.name}
                         </Link>
                         {item.variant && (
-                          <p className="text-sm text-gray-500">{item.variant}</p>
+                          <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-2">
+                            Selected: {item.variant}
+                          </span>
                         )}
                       </div>
                       <button
                         onClick={() => removeFromCart(item.id, item.variant)}
-                        className="text-gray-400 hover:text-red-500"
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-gray-300 hover:text-red-500 hover:bg-red-50 transition-all"
                       >
                         ✕
                       </button>
                     </div>
 
-                    <div className="flex justify-between items-center mt-4">
-                      <div className="flex items-center gap-3">
+                    <div className="flex justify-between items-center mt-6">
+                      <div className="flex items-center h-12 bg-offwhite rounded-full px-4 shadow-inner">
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1, item.variant)}
-                          className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-gray-100"
+                          className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white transition-colors font-bold"
                         >
                           -
                         </button>
-                        <span className="w-8 text-center">{item.quantity}</span>
+                        <span className="w-10 text-center font-bold">{item.quantity}</span>
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1, item.variant)}
-                          className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-gray-100"
+                          className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white transition-colors font-bold"
                         >
                           +
                         </button>
                       </div>
-                      <span className="font-bold text-lg">₹{item.price * item.quantity}</span>
+                      <span className="font-bold text-xl text-charcoal tracking-tight">₹{(item.price * item.quantity).toLocaleString("en-IN")}</span>
                     </div>
                   </div>
                 </div>
@@ -89,57 +95,59 @@ export default function CartPage() {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-2xl p-6 shadow-md sticky top-24">
-                <h2 className="font-heading text-xl font-bold mb-6">Order Summary</h2>
+              <div className="bg-charcoal rounded-[3rem] p-10 shadow-2xl sticky top-32 text-white border border-white/5 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
+                <h2 className="font-heading text-2xl font-bold mb-8 relative z-10">Boutique Summary</h2>
 
                 {/* Free Shipping Progress */}
-                {!isFreeShipping && (
-                  <div className="bg-primary/10 rounded-lg p-4 mb-6">
-                    <p className="text-sm text-primary font-medium mb-2">
-                      Add ₹{remainingForFreeShipping} more for FREE shipping!
+                <div className="mb-10 relative z-10">
+                  <div className="flex justify-between items-end mb-3">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                      {isFreeShipping ? "Shipping Status" : `₹${remainingForFreeShipping.toLocaleString("en-IN")} To Complimentary Delivery`}
                     </p>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-primary h-2 rounded-full transition-all"
-                        style={{ width: `${(cartTotal / shippingThreshold) * 100}%` }}
-                      />
+                    <span className="text-[10px] font-bold text-secondary uppercase">{Math.round(progressPercent)}%</span>
+                  </div>
+                  <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-1000 ease-out rounded-full ${isFreeShipping ? 'bg-green-400' : 'bg-secondary'}`}
+                      style={{ width: `${progressPercent}%` }}
+                    ></div>
+                  </div>
+                  {isFreeShipping && (
+                    <p className="text-[10px] text-green-400 font-bold uppercase tracking-widest mt-2 flex items-center gap-2">
+                      <span>✨</span> Complimentary Express Shipping Applied
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-4 mb-10 relative z-10">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400 text-sm font-medium">Subtotal</span>
+                    <span className="font-bold">₹{cartTotal.toLocaleString("en-IN")}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400 text-sm font-medium">Luxe Delivery</span>
+                    <span className="font-bold text-secondary">
+                      {isFreeShipping ? "Complimentary" : "₹99"}
+                    </span>
+                  </div>
+                  <div className="pt-6 border-t border-white/10 flex justify-between items-end">
+                    <div>
+                      <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em] block mb-1">Total Pieces</span>
+                      <span className="font-bold text-3xl">₹{(cartTotal + (isFreeShipping ? 0 : 99)).toLocaleString("en-IN")}</span>
                     </div>
-                  </div>
-                )}
-
-                {isFreeShipping && (
-                  <div className="bg-green-100 rounded-lg p-4 mb-6">
-                    <p className="text-green-700 font-medium">
-                      🎉 You have unlocked FREE shipping!
-                    </p>
-                  </div>
-                )}
-
-                <div className="space-y-3 border-t pt-4">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Subtotal</span>
-                    <span className="font-medium">₹{cartTotal}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Shipping</span>
-                    <span className="font-medium">{isFreeShipping ? "FREE" : "₹99"}</span>
-                  </div>
-                  <div className="flex justify-between border-t pt-3">
-                    <span className="font-bold text-lg">Total</span>
-                    <span className="font-bold text-lg">₹{cartTotal + (isFreeShipping ? 0 : 99)}</span>
                   </div>
                 </div>
 
                 {/* Checkout Button */}
-                <button className="w-full btn-primary mt-6">
-                  Proceed to Checkout
+                <button className="w-full py-5 rounded-full bg-secondary text-primary font-bold uppercase tracking-[0.2em] text-xs hover:scale-[1.02] active:scale-95 transition-all shadow-2xl shadow-secondary/20 relative z-10">
+                  Proceed To Secure Vault
                 </button>
 
-                {/* Trust badges */}
-                <div className="mt-6 flex flex-wrap justify-center gap-4 text-xs text-gray-500">
-                  <span>🛡️ Secure</span>
-                  <span>↩️ 30-Day Returns</span>
-                  <span>✓ Nickel-Free</span>
+                {/* Trust indications */}
+                <div className="mt-8 pt-8 border-t border-white/10 grid grid-cols-2 gap-4 text-[9px] font-bold uppercase tracking-widest text-gray-600 relative z-10">
+                  <div className="flex items-center gap-2"><span>🛡️</span> SSL Encrypted</div>
+                  <div className="flex items-center gap-2"><span>↩️</span> Easy Returns</div>
                 </div>
               </div>
             </div>

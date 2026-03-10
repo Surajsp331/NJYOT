@@ -1,39 +1,55 @@
+"use client";
+
+import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
+import QuickShopModal from "@/components/QuickShopModal";
 import { products, categories } from "@/data/products";
 import Link from "next/link";
 
-export const metadata = {
-  title: "Shop All | NJYOT",
-  description: "Browse our complete collection of handcrafted artificial jewellery.",
-};
+export default function ShopAllPage() {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-export default function ShopPage() {
+  const handleQuickShop = (product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-offwhite">
+      <QuickShopModal
+        product={selectedProduct}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+
       {/* Hero */}
-      <div className="bg-charcoal text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">Shop All</h1>
-          <p className="text-gray-300 max-w-2xl mx-auto">
-            From everyday studs to celebration chandeliers — find your signature piece.
+      <div className="bg-charcoal text-white py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <span className="text-[10px] text-secondary font-bold uppercase tracking-[0.4em] mb-4 block animate-fade-up">Collection</span>
+          <h1 className="font-heading text-5xl md:text-7xl font-bold mb-6">Shop All</h1>
+          <div className="w-12 h-1 bg-secondary mx-auto mb-8"></div>
+          <p className="text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            From everyday studs to celebration chandeliers — discover pieces crafted for those who command attention.
           </p>
         </div>
       </div>
 
-      {/* Categories */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Categories Navigation */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-gray-100 bg-white">
         <div className="flex flex-wrap gap-4 justify-center">
           <Link
             href="/shop"
-            className="px-6 py-2 rounded-full bg-primary text-white font-medium"
+            className="px-8 py-3 rounded-full bg-charcoal text-white text-xs font-bold uppercase tracking-widest shadow-xl"
           >
-            All
+            All Pieces
           </Link>
           {categories.map((cat) => (
             <Link
               key={cat.id}
               href={`/shop/${cat.id}`}
-              className="px-6 py-2 rounded-full border border-gray-300 text-charcoal hover:border-primary hover:text-primary transition-colors"
+              className="px-8 py-3 rounded-full border border-gray-100 text-charcoal hover:border-secondary hover:text-secondary transition-all text-xs font-bold uppercase tracking-widest whitespace-nowrap"
             >
               {cat.name}
             </Link>
@@ -42,10 +58,10 @@ export default function ShopPage() {
       </div>
 
       {/* Products Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-padding">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} onQuickShop={handleQuickShop} />
           ))}
         </div>
       </div>
