@@ -1,64 +1,74 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "@/lib/cart-context";
 
 export default function Navbar() {
   const { cartCount, setIsOpen } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
-      {/* Free Shipping Banner */}
-      <div className="bg-charcoal text-white text-center py-2 text-sm">
-        <span className="text-accent">Free shipping</span> on orders above ₹999
-      </div>
+    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled ? "glass" : "bg-transparent py-4"}`}>
+      {/* Top Banner */}
+      {!isScrolled && (
+        <div className="bg-primary text-white text-center py-2 text-[10px] uppercase font-bold tracking-[0.3em]">
+          Free shipping on all orders over ₹999
+        </div>
+      )}
 
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className={`flex justify-between items-center transition-all duration-500 ${isScrolled ? "h-16" : "h-20"}`}>
           {/* Logo */}
-          <Link href="/" className="font-heading text-2xl font-bold text-charcoal">
-            NJYOT
+          <Link href="/" className="group flex flex-col">
+            <span className={`font-heading text-2xl md:text-3xl font-bold tracking-tighter ${isScrolled ? "text-charcoal" : "text-white"}`}>
+              NJYOT
+            </span>
+            <span className={`text-[8px] font-bold uppercase tracking-[0.5em] -mt-1 ${isScrolled ? "text-primary/40" : "text-white/40"}`}>
+              Est. 2024
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="/shop" className="text-charcoal hover:text-primary transition-colors">
-              Shop All
-            </Link>
-            <Link href="/shop/earrings" className="text-charcoal hover:text-primary transition-colors">
-              Earrings
-            </Link>
-            <Link href="/shop/necklaces" className="text-charcoal hover:text-primary transition-colors">
-              Necklaces
-            </Link>
-            <Link href="/shop/rings" className="text-charcoal hover:text-primary transition-colors">
-              Rings
-            </Link>
-            <Link href="/shop/sets" className="text-charcoal hover:text-primary transition-colors">
-              Sets
-            </Link>
-            <Link href="/about" className="text-charcoal hover:text-primary transition-colors">
-              About
-            </Link>
-            <Link href="/faq" className="text-charcoal hover:text-primary transition-colors">
-              FAQ
-            </Link>
+          <div className="hidden md:flex items-center space-x-10">
+            {["Shop All", "Earrings", "Necklaces", "Rings", "Sets"].map((item) => (
+              <Link
+                key={item}
+                href={item === "Shop All" ? "/shop" : `/shop/${item.toLowerCase()}`}
+                className={`text-[11px] font-bold uppercase tracking-[0.2em] transition-all hover:text-secondary ${isScrolled ? "text-charcoal" : "text-white"}`}
+              >
+                {item}
+              </Link>
+            ))}
           </div>
 
           {/* Icons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-6">
+            <Link href="/search" className={`p-2 transition-transform hover:scale-110 ${isScrolled ? "text-charcoal" : "text-white"}`}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </Link>
+
             <button
               onClick={() => setIsOpen(true)}
-              className="relative p-2 text-charcoal hover:text-primary transition-colors"
+              className={`relative p-2 transition-transform hover:scale-110 ${isScrolled ? "text-charcoal" : "text-white"}`}
               aria-label="Cart"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                <span className="absolute top-0 right-0 bg-secondary text-primary text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-lg">
                   {cartCount}
                 </span>
               )}
@@ -66,45 +76,37 @@ export default function Navbar() {
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden p-2 text-charcoal"
+              className="md:hidden p-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Menu"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-              </svg>
+              <div className="w-6 h-6 flex flex-col justify-center space-y-1.5">
+                <span className={`block w-6 h-0.5 bg-current transition-all ${isMenuOpen ? "rotate-45 translate-y-2" : ""} ${isScrolled ? "text-charcoal" : "text-white"}`}></span>
+                <span className={`block w-4 h-0.5 bg-current transition-all ${isMenuOpen ? "opacity-0" : ""} ${isScrolled ? "text-charcoal" : "text-white"}`}></span>
+                <span className={`block w-6 h-0.5 bg-current transition-all ${isMenuOpen ? "-rotate-45 -translate-y-2" : ""} ${isScrolled ? "text-charcoal" : "text-white"}`}></span>
+              </div>
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden py-4 border-t">
-            <div className="flex flex-col space-y-3">
-              <Link href="/shop" className="text-charcoal hover:text-primary" onClick={() => setIsMenuOpen(false)}>
-                Shop All
+        {/* Mobile Menu Overlay */}
+        <div
+          className={`fixed inset-0 bg-charcoal/95 backdrop-blur-xl z-[-1] transition-all duration-700 md:hidden flex flex-col items-center justify-center ${isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        >
+          <div className="flex flex-col items-center space-y-8">
+            {["Shop All", "Earrings", "Necklaces", "Rings", "Sets", "About", "FAQ"].map((item, i) => (
+              <Link
+                key={item}
+                href={item === "Shop All" ? "/shop" : `/${item.toLowerCase()}`}
+                className={`text-2xl font-heading font-medium text-white transition-all hover:text-secondary ${isMenuOpen ? "animate-fade-up" : ""}`}
+                style={{ animationDelay: `${i * 100}ms` }}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item}
               </Link>
-              <Link href="/shop/earrings" className="text-charcoal hover:text-primary" onClick={() => setIsMenuOpen(false)}>
-                Earrings
-              </Link>
-              <Link href="/shop/necklaces" className="text-charcoal hover:text-primary" onClick={() => setIsMenuOpen(false)}>
-                Necklaces
-              </Link>
-              <Link href="/shop/rings" className="text-charcoal hover:text-primary" onClick={() => setIsMenuOpen(false)}>
-                Rings
-              </Link>
-              <Link href="/shop/sets" className="text-charcoal hover:text-primary" onClick={() => setIsMenuOpen(false)}>
-                Sets
-              </Link>
-              <Link href="/about" className="text-charcoal hover:text-primary" onClick={() => setIsMenuOpen(false)}>
-                About
-              </Link>
-              <Link href="/faq" className="text-charcoal hover:text-primary" onClick={() => setIsMenuOpen(false)}>
-                FAQ
-              </Link>
-            </div>
+            ))}
           </div>
-        )}
+        </div>
       </nav>
     </header>
   );

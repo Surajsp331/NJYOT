@@ -58,8 +58,16 @@ export default function QuickShop({ product, isOpen, onClose }) {
         </button>
 
         {/* Product Image */}
-        <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center rounded-t-2xl">
-          <span className="text-8xl">{product.emoji}</span>
+        <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center rounded-t-2xl overflow-hidden">
+          {product.images?.[0] ? (
+            <img
+              src={product.images[0]}
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span className="text-8xl">{product.emoji}</span>
+          )}
         </div>
 
         {/* Product Info */}

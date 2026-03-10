@@ -2,47 +2,48 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="relative bg-gradient-to-br from-offwhite to-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Content */}
-          <div className="text-center md:text-left">
-            <span className="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6">
-              New Collection Available
+    <section className="relative h-[90vh] min-h-[700px] flex items-center overflow-hidden bg-charcoal">
+      {/* Dynamic Background with Ken Burns Effect */}
+      <div className="absolute inset-0 z-0">
+        <div
+          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1515562141207-7a88fb0ce33e?q=80&w=2070')] bg-cover bg-center animate-ken-burns opacity-60"
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/40 to-transparent"></div>
+      </div>
+
+      <div className="container relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl">
+          <div className="animate-fade-up [animation-delay:200ms] opacity-0">
+            <span className="inline-block px-4 py-1.5 bg-secondary/20 backdrop-blur-md text-secondary border border-secondary/30 rounded-full text-xs font-bold uppercase tracking-widest mb-8">
+              Premium Collection 2024
             </span>
-            <h1 className="font-heading text-4xl md:text-6xl font-bold text-charcoal leading-tight mb-6">
-              Statement Jewellery — <span className="text-primary">Lightweight.</span> Hypoallergenic. <span className="text-accent">Impossible to Ignore.</span>
-            </h1>
-            <p className="text-gray-600 text-lg mb-8 max-w-lg mx-auto md:mx-0">
-              Hand-finished artificial jewellery that looks designer — delivered in 2-4 days.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <Link href="/shop" className="btn-primary text-center">
-                Shop New Arrivals
-              </Link>
-              <Link href="/shop" className="btn-secondary text-center">
-                Explore Bestsellers
-              </Link>
-            </div>
           </div>
 
-          {/* Image Placeholder */}
-          <div className="relative">
-            <div className="aspect-square rounded-3xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-              <div className="text-center p-8">
-                <div className="w-48 h-48 mx-auto mb-4 rounded-full bg-white shadow-xl flex items-center justify-center">
-                  <span className="text-6xl">💎</span>
-                </div>
-                <p className="text-charcoal font-heading text-xl">Featured Product</p>
-                <p className="text-gray-500">Aurora Hoop Earrings</p>
-              </div>
-            </div>
-            {/* Decorative elements */}
-            <div className="absolute -top-4 -right-4 w-20 h-20 bg-accent/30 rounded-full blur-xl"></div>
-            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-primary/20 rounded-full blur-xl"></div>
+          <h1 className="animate-fade-up [animation-delay:400ms] opacity-0 font-heading text-5xl md:text-8xl font-bold text-white leading-[1.1] mb-8">
+            Impact Without <br />
+            <span className="text-secondary italic font-medium">The Weight.</span>
+          </h1>
+
+          <p className="animate-fade-up [animation-delay:600ms] opacity-0 text-gray-300 text-lg md:text-xl mb-12 max-w-lg leading-relaxed">
+            Runway-inspired jewellery handcrafted for those who command attention. Lightweight, hypoallergenic, and designed to shine.
+          </p>
+
+          <div className="animate-fade-up [animation-delay:800ms] opacity-0 flex flex-col sm:flex-row gap-6">
+            <Link href="/shop" className="btn-primary group">
+              Shop Arrivals
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14m-7-7 7 7-7 7" />
+              </svg>
+            </Link>
+            <Link href="/shop" className="btn-secondary">
+              Explore Sets
+            </Link>
           </div>
         </div>
       </div>
+
+      {/* Decorative Elements */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-offwhite to-transparent"></div>
     </section>
   );
 }

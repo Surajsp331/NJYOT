@@ -29,7 +29,11 @@ export default function ProductCard({ product }) {
 
           {/* Badges */}
           {product.badge && (
-            <div className="absolute top-3 left-3 bg-accent px-3 py-1 text-xs font-semibold tracking-wider text-charcoal rounded-full shadow-sm">
+            <div className={`absolute top-3 left-3 px-3 py-1 text-xs font-semibold tracking-wider rounded-full shadow-sm ${
+              product.isDemo
+                ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white animate-pulse"
+                : "bg-accent text-charcoal"
+            }`}>
               {product.badge}
             </div>
           )}

@@ -1,5 +1,38 @@
 export const products = [
   {
+    id: "demo-gold-necklace",
+    slug: "demo-gold-necklace",
+    name: "✨ DEMO: Gold Plated Necklace",
+    title: "DEMO: Gold Plated Necklace",
+    category: "Necklaces",
+    price: 999,
+    originalPrice: 1999,
+    rating: 5,
+    reviews: 999,
+    reviewsCount: 999,
+    stock: 50,
+    badge: "DEMO",
+    emoji: "📿",
+    isDemo: true,
+    shortDesc: "Demo product with real images - Gold plated necklace for testing.",
+    description: "This is a demo product with real placeholder images. Use this to test the Quick Shop, cart functionality, and checkout flow. Features 18k gold plating.",
+    longDescription: "DEMO PRODUCT - This item is for testing purposes. The Gold Plated Necklace features premium 18k gold plating on a nickel-free brass base. Perfect for testing the entire e-commerce flow from browsing to checkout. Images are loaded from placeholder service.",
+    materials: "Nickel-free brass, 18k gold plating",
+    care: "Store in provided pouch. Avoid water and chemicals.",
+    features: [
+      "18k gold plating",
+      "Nickel-free & hypoallergenic",
+      "18-inch chain with extender",
+      "Perfect for testing checkout flow"
+    ],
+    variants: ["Gold", "Rose Gold", "Silver"],
+    images: [
+      "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop"
+    ],
+    tags: ["demo", "necklace", "gold", "testing"]
+  },
+  {
     id: "aurora-hoop-earrings",
     slug: "aurora-hoop-earrings",
     name: "Aurora Hoop Earrings",
@@ -25,7 +58,10 @@ export const products = [
       "30-day easy returns"
     ],
     variants: ["Rose Gold", "Silver", "Gold"],
-    images: [],
+    images: [
+      "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&h=600&fit=crop"
+    ],
     tags: ["hoops", "earrings", "rose-gold", "bestseller"]
   },
   {
