@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const faqData = [
   {
-    question: "What defines NJYOT's artisan materials?",
+    question: "What defines LuxeSpark's artisan materials?",
     answer: "Our collections are curated from hypoallergenic, nickel-free surgical-grade alloys. Each piece is meticulously finished with high-micron plating of 18k gold, rose gold, or genuine rhodium, ensuring both enduring brilliance and absolute comfort for the most sensitive skin."
   },
   {
@@ -13,20 +13,20 @@ const faqData = [
     answer: "Excellence shouldn't wait. We dispatch your selections within 24-48 business hours. Standard boutique delivery arrives in 3-5 days, while our Express Air service offers overnight or second-day delivery across most major metropolitan areas."
   },
   {
-    question: "How should I care for my NJYOT pieces?",
-    answer: "To preserve your jewelry's radiant finish, avoid direct contact with fragrances, sea water, and harsh chemicals. We recommend a gentle wipe with our artisan polishing cloth after each wear, followed by storage in the provided anti-tarnish NJYOT vault."
+    question: "How should I care for my LuxeSpark pieces?",
+    answer: "To preserve your jewelry's radiant finish, avoid direct contact with fragrances, sea water, and harsh chemicals. We recommend a gentle wipe with our artisan polishing cloth after each wear, followed by storage in the provided anti-tarnish LuxeSpark vault."
   },
   {
     question: "Can I return a selection if it doesn't resonate?",
-    answer: "Your satisfaction is paramount. We offer a 14-day discovery period for all boutique purchases. Items must be returned in their original, pristine condition within the NJYOT presentation suite. Please contact our Concierge for complimentary return logistics."
+    answer: "Your satisfaction is paramount. We offer a 14-day discovery period for all boutique purchases. Items must be returned in their original, pristine condition within the LuxeSpark presentation suite. Please contact our Concierge for complimentary return logistics."
   },
   {
     question: "Is every piece truly nickel-free?",
-    answer: "Yes, without exception. We enforce a zero-nickel laboratory standard across our entire manufacturing suite to ensure the NJYOT experience is safe, comfortable, and inclusive for all skin types."
+    answer: "Yes, without exception. We enforce a zero-nickel laboratory standard across our entire manufacturing suite to ensure the LuxeSpark experience is safe, comfortable, and inclusive for all skin types."
   },
   {
     question: "Do you offer private consultations or bulk curation?",
-    answer: "For bridal suites, editorial styling, or corporate gifting, our lead curators are available for private consultation. We offer specialized pricing and curation services for orders exceeding 20 pieces. Kindly reach out to our concierge at curate@njyot.com."
+    answer: "For bridal suites, editorial styling, or corporate gifting, our lead curators are available for private consultation. We offer specialized pricing and curation services for orders exceeding 20 pieces. Kindly reach out to our concierge at curate@luxespark.com."
   }
 ];
 
@@ -96,7 +96,7 @@ export default function FAQPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="mailto:concierge@njyot.com"
+              href="mailto:concierge@luxespark.com"
               className="btn-primary px-12 py-5"
             >
               Direct Message

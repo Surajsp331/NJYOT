@@ -30,7 +30,7 @@ export default function CheckoutSuccessPage() {
           <div className="w-16 h-1 bg-secondary mx-auto mb-10"></div>
 
           <p className="text-gray-400 text-lg leading-relaxed mb-12">
-            Your selection from NJYOT has been secured. Our curators are now preparing your order for safe passage. A confirmation of your legacy has been sent to your email.
+            Your selection from LuxeSpark has been secured. Our curators are now preparing your order for safe passage. A confirmation of your legacy has been sent to your email.
           </p>
 
           <div className="grid sm:grid-cols-2 gap-4">

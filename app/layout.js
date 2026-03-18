@@ -1,6 +1,7 @@
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
+import { WishlistProvider } from "@/lib/wishlist-context";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartSidebar from "@/components/CartSidebar";
@@ -18,8 +19,8 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "NJYOT | Statement Artificial Jewellery",
-  description: "Handcrafted, hypoallergenic fashion jewellery — runway looks without the price. Lightweight, stylish, and delivered in 2-4 days.",
+  title: "NJYOT Jewelry | Premium Artificial & Fashion Jewelry",
+  description: "Discover NJYOT Jewelry: Modern, artisanal fashion jewelry. Handcrafted, hypoallergenic, and elegantly designed for your most exquisite moments.",
 };
 
 export default function RootLayout({ children }) {
@@ -27,14 +28,16 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${playfair.variable} ${inter.variable} font-body antialiased`}>
         <CartProvider>
-          <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <CartSidebar />
-            <main className="flex-1">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          <WishlistProvider>
+            <div className="min-h-screen flex flex-col">
+              <Navbar />
+              <CartSidebar />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </WishlistProvider>
         </CartProvider>
       </body>
     </html>

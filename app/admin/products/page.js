@@ -11,7 +11,7 @@ export default function AdminProductsPage() {
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        const isAdmin = localStorage.getItem("njyot-admin-auth");
+        const isAdmin = localStorage.getItem("luxespark-admin-auth");
         if (isAdmin !== "true") {
             router.push("/admin/login");
         } else {
@@ -32,7 +32,7 @@ export default function AdminProductsPage() {
             <aside className="w-64 bg-charcoal text-white flex flex-col p-8 hidden md:flex h-screen sticky top-0">
                 <div className="mb-12">
                     <Link href="/admin/dashboard" className="font-heading text-2xl font-bold tracking-tighter hover:opacity-80 transition-opacity">
-                        NJYOT<span className="text-secondary">.</span>
+                    <h2 className="font-heading text-2xl font-bold tracking-tighter">LuxeSpark<span className="text-secondary">.</span></h2>
                     </Link>
                     <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mt-2">Vault Manager</p>
                 </div>
@@ -53,7 +53,7 @@ export default function AdminProductsPage() {
                 </nav>
 
                 <button
-                    onClick={() => { localStorage.removeItem("njyot-admin-auth"); router.push("/admin/login"); }}
+                    onClick={() => { localStorage.removeItem("luxespark-admin-auth"); router.push("/admin/login"); }}
                     className="flex items-center gap-3 px-4 py-3 hover:bg-red-500/10 rounded-xl text-sm font-bold text-red-400 transition-all mt-auto"
                 >
                     <span>🚪</span> Logout

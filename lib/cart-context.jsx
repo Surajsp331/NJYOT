@@ -9,14 +9,14 @@ export function CartProvider({ children }) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const savedCart = localStorage.getItem("njyot-cart");
+    const savedCart = localStorage.getItem("luxespark-cart");
     if (savedCart) {
       setCart(JSON.parse(savedCart));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("njyot-cart", JSON.stringify(cart));
+    localStorage.setItem("luxespark-cart", JSON.stringify(cart));
   }, [cart]);
 
   const addToCart = (product, quantity = 1, variant = null) => {

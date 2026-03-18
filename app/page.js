@@ -1,137 +1,75 @@
 import Hero from "@/components/Hero";
 import ProductCard from "@/components/ProductCard";
-import { products, categories } from "@/data/products";
-import Link from "next/link";
+import { getFeaturedProducts } from "@/lib/data";
 
-export default function Home() {
-  const bestsellers = products.filter(p => p.badge === "Bestseller" || p.badge === "Premium");
-  const newArrivals = products.slice(0, 8);
+export default async function Home() {
+  const products = await getFeaturedProducts();
 
   return (
-    <>
-      {/* Hero Section */}
+    <div className="flex flex-col min-h-screen pt-[130px] md:pt-[150px]">
       <Hero />
 
-      {/* Featured Categories */}
-      <section className="py-12 bg-white border-b border-gray-100">
+      {/* Top Collections section */}
+      <section className="section-padding bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap justify-center gap-4 md:gap-8">
-            {categories.map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/shop/${cat.id}`}
-                className="px-6 py-2 rounded-full border border-gray-200 text-charcoal hover:border-primary hover:text-primary transition-colors text-sm font-medium"
-              >
-                {cat.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Bestsellers Section */}
-      <section className="py-20 bg-offwhite">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-charcoal mb-4">Our Bestsellers</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Discover our most loved pieces. Handcrafted, hypoallergenic, and designed to make a statement.
-            </p>
+          
+          <div className="flex flex-col md:flex-row justify-between items-baseline mb-10 border-b border-gray-100 pb-4">
+             <h2 className="text-2xl md:text-3xl font-black text-black">
+                Top Collections
+             </h2>
+             <div className="flex gap-6 text-sm font-bold uppercase tracking-wider text-gray-400 mt-4 md:mt-0 overflow-x-auto w-full md:w-auto overflow-y-hidden pb-2 md:pb-0 hide-scrollbar whitespace-nowrap">
+                <button className="text-secondary border-b-2 border-secondary pb-1">All</button>
+                <button className="hover:text-black transition-colors pb-1 border-b-2 border-transparent hover:border-black">Bridal</button>
+                <button className="hover:text-black transition-colors pb-1 border-b-2 border-transparent hover:border-black">Necklaces</button>
+                <button className="hover:text-black transition-colors pb-1 border-b-2 border-transparent hover:border-black">Earrings</button>
+             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {bestsellers.map((product) => (
+          <div className="product-grid">
+            {products.slice(0, 8).map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
 
-          <div className="text-center mt-12">
-            <Link href="/shop" className="btn-secondary inline-block">
-              View All Collections
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* Value Proposition / About Section */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="relative aspect-square md:aspect-[4/3] rounded-3xl overflow-hidden bg-primary/10 flex items-center justify-center">
-              <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 via-primary/10 to-transparent"></div>
-              <div className="text-center p-8 z-10 w-full max-w-sm">
-                <div className="w-full aspect-[3/4] rounded-2xl bg-white shadow-2xl rotate-3 flex items-center justify-center border-4 border-white">
-                   <span className="text-6xl">✨</span>
-                </div>
-              </div>
+      {/* Featured Banner Middle */}
+      <section className="py-8 bg-white">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="w-full bg-[#f4f4f4] rounded-sm min-h-[300px] flex items-center justify-center p-8 relative overflow-hidden group border-t-4 border-primary">
+               <div className="relative z-10 text-center">
+                 <span className="text-xs font-bold text-gray-500 tracking-[0.2em] uppercase mb-4 block">Summer Edit • Flat 50% Off</span>
+                 <h2 className="text-3xl md:text-5xl font-black text-black mb-6">Bridal Collection</h2>
+                 <button className="bg-secondary text-white font-bold px-8 py-3.5 hover:bg-black transition-colors shadow-sm">
+                   Shop Now
+                 </button>
+               </div>
+               {/* Abstract decorative elements simulating images */}
+               <div className="absolute top-0 right-0 w-1/3 h-full mix-blend-multiply opacity-50 bg-[url('https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=600')] bg-cover bg-center pointer-events-none rounded-l-full"></div>
             </div>
-
-            <div>
-              <span className="text-primary font-bold tracking-wider uppercase text-sm mb-4 block">The NJYOT Promise</span>
-              <h2 className="font-heading text-4xl md:text-5xl font-bold leading-tight text-charcoal mb-6">
-                Impact Without The Weight.
-              </h2>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                We design statement jewellery for people who want impact without the weight of high cost. Every piece is thoughtfully crafted, ethically plated, and tested for long-lasting shine.
-              </p>
-
-              <ul className="space-y-4 mb-10">
-                {[
-                  "Hypoallergenic, nickel-free plating",
-                  "Lightweight for all-day comfort",
-                  "Ethically made & conscientiously packaged",
-                  "30-day easy return policy"
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start">
-                    <span className="text-accent text-xl mr-3 leading-none">✓</span>
-                    <span className="text-charcoal font-medium">{item}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <Link href="/about" className="text-primary font-medium hover:underline underline-offset-4 inline-flex items-center">
-                Read our brand story
-                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </Link>
-            </div>
-          </div>
-        </div>
+         </div>
       </section>
 
-      {/* New Arrivals */}
-      <section className="py-20 bg-offwhite">
+      {/* New Arrivals section */}
+      <section className="section-padding bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-charcoal mb-4">New Arrivals</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Fresh styles just dropped. Be the first to wear our latest designs.
-            </p>
+          
+          <div className="flex flex-col md:flex-row justify-between items-baseline mb-10 border-b border-gray-100 pb-4">
+             <h2 className="text-2xl md:text-3xl font-black text-black">
+                New Arrivals
+             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {newArrivals.map((product) => (
-              <ProductCard key={product.id} product={product} />
+          <div className="product-grid">
+            {products.slice(8, 12).map((product) => (
+               <ProductCard key={product.id} product={product} />
             ))}
           </div>
+
         </div>
       </section>
 
-      {/* Social Proof / UGC Banner */}
-      <section className="py-20 bg-charcoal text-white text-center">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-center mb-6">
-            <div className="flex text-accent text-2xl">
-              ★★★★★
-            </div>
-          </div>
-          <blockquote className="text-2xl md:text-3xl font-heading font-medium leading-relaxed mb-8">
-             &quot;Honestly the most comfortable statement earrings I have ever worn. They look exactly like designer pieces but cost a fraction. Arrived in 2 days!&quot;
-          </blockquote>
-          <p className="font-medium text-gray-300 uppercase tracking-widest text-sm">— Priya S., Verified Buyer</p>
-        </div>
-      </section>
-    </>
+    </div>
   );
 }

@@ -9,7 +9,7 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const isAdmin = localStorage.getItem("njyot-admin-auth");
+        const isAdmin = localStorage.getItem("luxespark-admin-auth");
         if (isAdmin !== "true") {
             router.push("/admin/login");
         } else {
@@ -18,7 +18,7 @@ export default function AdminDashboard() {
     }, [router]);
 
     const handleLogout = () => {
-        localStorage.removeItem("njyot-admin-auth");
+        localStorage.removeItem("luxespark-admin-auth");
         router.push("/admin/login");
     };
 
@@ -36,7 +36,7 @@ export default function AdminDashboard() {
             {/* Sidebar */}
             <aside className="w-64 bg-charcoal text-white flex flex-col p-8 hidden md:flex">
                 <div className="mb-12">
-                    <h2 className="font-heading text-2xl font-bold tracking-tighter">NJYOT<span className="text-secondary">.</span></h2>
+                    <h2 className="font-heading text-2xl font-bold tracking-tighter">LuxeSpark<span className="text-secondary">.</span></h2>
                     <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mt-2">Admin Panel</p>
                 </div>
 

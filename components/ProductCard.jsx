@@ -1,93 +1,118 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import QuickShop from "./QuickShop";
+import { useWishlist } from "@/lib/wishlist-context";
+import { useState } from "react";
 
 export default function ProductCard({ product }) {
   const [showQuickShop, setShowQuickShop] = useState(false);
+  const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
 
-  // Convert rating to array of stars
-  const stars = Array.from({ length: 5 }, (_, i) => i < Math.floor(product.rating));
+  const isLiked = isInWishlist?.(product?.id) ?? false;
+  
+  const rating = product?.rating || 5;
+  const starsArray = Array(5).fill(false).map((_, i) => i < Math.floor(rating));
+
+  const toggleWishlist = (e) => {
+    e.preventDefault();
+    if (isLiked) removeFromWishlist(product.id);
+    else addToWishlist(product);
+  };
+
+  if (!product) return null;
 
   return (
     <>
-      <div className="group flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-        {/* Image Gallery / Hero Image */}
-        <Link href={`/product/${product.slug}`} className="relative aspect-[4/5] bg-offwhite w-full overflow-hidden block">
-          {product.images?.[0] ? (
-            <img
-              src={product.images[0]}
-              alt={product.title}
-              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-5xl bg-gradient-to-br from-primary/10 to-accent/10">
-              {product.emoji || "💍"}
-            </div>
-          )}
+      <div className="group flex flex-col bg-white rounded-sm border border-gray-100 hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden relative w-full animate-fade-up h-full">
+        
+        {/* Image Area - Light Grey Background */}
+        <div className="relative aspect-square bg-[#F9F9F9] w-full overflow-hidden block">
+           <Link href={`/product/${product.slug}`} className="w-full h-full block">
+              {product.images?.[0] ? (
+                <>
+                  <img
+                    src={product.images[0]}
+                    alt={product.title || product.name || 'Product'}
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out p-6"
+                  />
+                  {product.images[1] && (
+                    <img
+                      src={product.images[1]}
+                      alt={product.title || product.name || 'Product'}
+                      className="w-full h-full object-cover object-center absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out p-6 bg-[#F9F9F9]"
+                    />
+                  )}
+                </>
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center text-gray-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span className="text-sm font-medium">No Image</span>
+                </div>
+              )}
+           </Link>
 
-          {/* Badges */}
+          {/* Solid Red Badges */}
           {product.badge && (
-            <div className={`absolute top-3 left-3 px-3 py-1 text-xs font-semibold tracking-wider rounded-full shadow-sm ${
-              product.isDemo
-                ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white animate-pulse"
-                : "bg-accent text-charcoal"
+            <div className={`absolute top-3 left-3 px-3 py-1 font-bold text-[10px] uppercase tracking-wider rounded-sm z-10 ${
+              product.badge.toLowerCase() === 'sale' || product.badge.toLowerCase() === 'premium'
+                ? "bg-secondary text-white"
+                : "bg-black text-white"
             }`}>
               {product.badge}
             </div>
           )}
 
-          {/* Low Stock Badge */}
-          {product.stock <= 5 && product.stock > 0 && (
-            <div className="absolute top-3 right-3 bg-red-500 px-3 py-1 text-xs font-semibold tracking-wider text-white rounded-full shadow-sm">
-              Only {product.stock} left!
-            </div>
-          )}
-        </Link>
-
-        {/* Product Info */}
-        <div className="p-5 flex flex-col flex-1">
-          {/* Rating */}
-          <div className="flex items-center gap-1 mb-2">
-            <div className="flex text-accent text-sm">
-              {stars.map((filled, i) => (
-                <span key={i}>{filled ? "★" : "☆"}</span>
-              ))}
-            </div>
-            <span className="text-xs text-gray-500 ml-1">({product.reviewsCount || product.reviews || 0})</span>
+          {/* Quick Actions overlay sliding from bottom */}
+          <div className="absolute bottom-0 left-0 w-full p-4 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-20 flex gap-2">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setShowQuickShop(true);
+              }}
+              className="flex-1 bg-black text-white text-[11px] font-bold uppercase tracking-wider py-3 hover:bg-secondary transition-colors shadow-sm rounded-sm"
+            >
+              Add To Cart
+            </button>
+            <button
+               onClick={toggleWishlist}
+               className={`w-11 h-11 bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors shadow-sm rounded-sm ${isLiked ? 'text-secondary' : 'text-black'}`}
+               aria-label="Wishlist"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill={isLiked ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            </button>
           </div>
+          
+        </div>
 
-          {/* Title */}
-          <Link href={`/product/${product.slug}`} className="block mb-1">
-            <h3 className="font-heading font-semibold text-lg text-charcoal truncate hover:text-primary transition-colors">
+        {/* Product Details - Clean White Background */}
+        <div className="p-5 flex flex-col flex-1 bg-white text-center items-center">
+          
+          <Link href={`/product/${product.slug}`} className="block mb-1 w-full">
+            <h3 className="font-heading font-medium text-[15px] text-gray-600 line-clamp-2 hover:text-black transition-colors leading-snug">
               {product.name}
             </h3>
           </Link>
 
-          {/* Short Description */}
-          <p className="text-sm text-gray-500 mb-4 line-clamp-1">{product.shortDesc}</p>
+          {/* Rating */}
+          <div className="flex items-center gap-1 my-2 justify-center">
+             <div className="flex text-[#EECE4A] text-sm">
+              {starsArray.map((filled, i) => (
+                <span key={i}>{filled ? "★" : "☆"}</span>
+              ))}
+            </div>
+          </div>
 
-          {/* Price & Action */}
-          <div className="mt-auto flex items-center justify-between">
-            <div>
-              <span className="font-bold text-lg text-charcoal">₹{product.price.toLocaleString("en-IN")}</span>
-              {product.originalPrice && (
-                <span className="ml-2 text-sm text-gray-400 line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span>
-              )}
-            </div>
-            <div className="flex gap-2">
-              {/* Quick Shop Button */}
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowQuickShop(true);
-                }}
-                className="h-10 px-4 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors shadow-sm text-sm font-medium"
-              >
-                Quick Shop
-              </button>
-            </div>
+          {/* Price */}
+          <div className="mt-auto flex items-end justify-center gap-3">
+             <span className="font-black text-lg text-black">Rs. {product.price?.toLocaleString("en-IN")}</span>
+             {product.originalPrice && (
+               <span className="text-sm text-gray-400 line-through font-medium translate-y-[-2px]">Rs. {product.originalPrice.toLocaleString("en-IN")}</span>
+             )}
           </div>
         </div>
       </div>

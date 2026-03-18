@@ -2,48 +2,66 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="relative h-[90vh] min-h-[700px] flex items-center overflow-hidden bg-charcoal">
-      {/* Dynamic Background with Ken Burns Effect */}
-      <div className="absolute inset-0 z-0">
-        <div
-          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1515562141207-7a88fb0ce33e?q=80&w=2070')] bg-cover bg-center animate-ken-burns opacity-60"
-        ></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/40 to-transparent"></div>
-      </div>
-
-      <div className="container relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl">
-          <div className="animate-fade-up [animation-delay:200ms] opacity-0">
-            <span className="inline-block px-4 py-1.5 bg-secondary/20 backdrop-blur-md text-secondary border border-secondary/30 rounded-full text-xs font-bold uppercase tracking-widest mb-8">
-              Premium Collection 2024
-            </span>
+    <section className="bg-white py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          {/* Banner 1 */}
+          <div className="relative overflow-hidden bg-[#F3F3F3] rounded-sm group min-h-[360px] flex items-center p-8 md:p-12">
+            <div className="relative z-10 w-2/3">
+              <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest block mb-3">
+                Get Up To 20% Off
+              </span>
+              <h2 className="font-heading text-3xl md:text-5xl font-black text-black mb-4 leading-tight">
+                New Bridal<br />Collection
+              </h2>
+              <p className="text-gray-600 mb-8 max-w-sm">
+                Offering cutting-edge design and timeless elegance.
+              </p>
+              <Link href="/shop/bridal" className="inline-block bg-secondary text-white font-bold px-8 py-3.5 hover:bg-black transition-colors shadow-sm">
+                Shop Now
+              </Link>
+            </div>
+            
+            {/* Banner Image / Abstract Art */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1/2 h-full flex justify-end items-center opacity-90 group-hover:scale-105 transition-transform duration-700 origin-right">
+                <img 
+                  src="https://images.unsplash.com/photo-1599643478514-4a485521b369?q=80&w=1000&auto=format&fit=crop" 
+                  alt="Bridal Collection" 
+                  className="w-full h-full object-cover rounded-l-[100px] shadow-2xl"
+                />
+            </div>
           </div>
 
-          <h1 className="animate-fade-up [animation-delay:400ms] opacity-0 font-heading text-5xl md:text-8xl font-bold text-white leading-[1.1] mb-8">
-            Impact Without <br />
-            <span className="text-secondary italic font-medium">The Weight.</span>
-          </h1>
-
-          <p className="animate-fade-up [animation-delay:600ms] opacity-0 text-gray-300 text-lg md:text-xl mb-12 max-w-lg leading-relaxed">
-            Runway-inspired jewellery handcrafted for those who command attention. Lightweight, hypoallergenic, and designed to shine.
-          </p>
-
-          <div className="animate-fade-up [animation-delay:800ms] opacity-0 flex flex-col sm:flex-row gap-6">
-            <Link href="/shop" className="btn-primary group">
-              Shop Arrivals
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14m-7-7 7 7-7 7" />
-              </svg>
-            </Link>
-            <Link href="/shop" className="btn-secondary">
-              Explore Sets
-            </Link>
+          {/* Banner 2 */}
+          <div className="relative overflow-hidden bg-[#F3F3F3] rounded-sm group min-h-[360px] flex items-center p-8 md:p-12">
+            <div className="relative z-10 w-2/3">
+              <span className="text-sm font-semibold text-gray-500 uppercase tracking-widest block mb-3">
+                Get Up To 30% Off
+              </span>
+              <h2 className="font-heading text-3xl md:text-5xl font-black text-black mb-4 leading-tight">
+                Premium<br />Necklaces
+              </h2>
+              <p className="text-gray-600 mb-8 max-w-sm">
+                Stay connected to your roots with premium handcrafted art.
+              </p>
+              <Link href="/shop/necklaces" className="inline-block bg-secondary text-white font-bold px-8 py-3.5 hover:bg-black transition-colors shadow-sm">
+                Shop Now
+              </Link>
+            </div>
+            
+             {/* Banner Image / Abstract Art */}
+             <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1/2 h-full flex justify-end items-center opacity-90 group-hover:scale-105 transition-transform duration-700 origin-right">
+                <img 
+                  src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?q=80&w=1000&auto=format&fit=crop" 
+                  alt="Premium Necklaces" 
+                  className="w-full h-full object-cover rounded-l-[100px] shadow-2xl"
+                />
+            </div>
           </div>
+
         </div>
       </div>
-
-      {/* Decorative Elements */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-offwhite to-transparent"></div>
     </section>
   );
 }

@@ -101,7 +101,7 @@ export default function ProductPage({ params }) {
           {/* Details Column */}
           <div className="bg-white p-8 md:p-12 rounded-[3rem] shadow-xl border border-gray-100">
             <span className="text-[10px] text-primary/40 font-bold uppercase tracking-[0.4em] mb-4 block">
-              NJYOT Luxe Series
+              LuxeSpark Signature Series
             </span>
             <h1 className="font-heading text-4xl md:text-5xl font-bold text-charcoal mb-6 leading-tight">
               {product.title || product.name}

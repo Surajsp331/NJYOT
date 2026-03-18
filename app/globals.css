@@ -4,12 +4,12 @@
 
 @layer base {
   :root {
-    --background: 210, 40%, 98%;
-    --foreground: 222, 47%, 11%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
   }
 
   body {
-    @apply bg-offwhite text-charcoal font-body antialiased selection:bg-primary/10 selection:text-primary;
+    @apply bg-white text-primary font-body antialiased;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -19,24 +19,47 @@
 }
 
 @layer components {
-  .glass {
-    @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-xl shadow-black/5;
-  }
-
+  /* Clean modern button styles */
   .btn-primary {
-    @apply bg-secondary text-primary px-8 py-4 rounded-full font-bold uppercase tracking-widest text-xs transition-all duration-300 hover:scale-105 hover:bg-secondary/90 hover:shadow-2xl hover:shadow-secondary/30 active:scale-95 flex items-center justify-center gap-2;
+    @apply bg-primary text-black px-8 py-3.5 font-bold text-sm transition-all duration-200 hover:bg-black hover:text-white flex items-center justify-center gap-2 shadow-sm;
   }
 
   .btn-secondary {
-    @apply bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-xs transition-all duration-300 hover:bg-white hover:text-charcoal hover:border-white active:scale-95 flex items-center justify-center gap-2;
+    @apply bg-secondary text-white px-8 py-3.5 font-bold text-sm transition-all duration-200 hover:bg-black flex items-center justify-center gap-2 shadow-sm;
+  }
+
+  .btn-outline {
+    @apply bg-transparent border-2 border-charcoal text-charcoal px-8 py-3.5 font-bold text-sm transition-all duration-200 hover:bg-charcoal hover:text-white;
   }
 
   .card-hover {
-    @apply transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-black/10;
+    @apply transition-all duration-300 hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)];
   }
 
   .section-padding {
-    @apply py-24 md:py-32;
+    @apply py-12 md:py-20;
+  }
+
+  /* Product grid styles */
+  .product-grid {
+    @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm;
+  }
+
+  .badge-sale {
+    @apply bg-secondary text-white;
+  }
+
+  .badge-new {
+    @apply bg-charcoal text-white;
+  }
+
+  .badge-bestseller {
+    @apply bg-primary text-black;
   }
 }
 
@@ -44,8 +67,64 @@
   .text-balance {
     text-wrap: balance;
   }
-  
-  .text-glow {
-    text-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+
+  /* Product hover effects */
+  .product-card {
+    @apply transition-all duration-300;
+  }
+
+  .product-card:hover .product-image img {
+    @apply scale-105;
+  }
+
+  /* Image zoom on hover */
+  .zoom-hover {
+    @apply overflow-hidden;
+  }
+
+  .zoom-hover img {
+    @apply transition-transform duration-500;
+  }
+
+  .zoom-hover:hover img {
+    @apply scale-110;
   }
 }
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Stagger animations */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+.stagger-7 { animation-delay: 0.35s; }
+.stagger-8 { animation-delay: 0.4s; }

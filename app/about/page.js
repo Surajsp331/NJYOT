@@ -11,10 +11,10 @@ export default function AboutPage() {
         <div className="absolute top-0 right-0 w-[50%] h-full bg-primary/5 rounded-full blur-[120px] translate-x-1/2"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <span className="text-[10px] text-secondary font-bold uppercase tracking-[0.5em] mb-4 block animate-fade-up">Our Legacy</span>
-          <h1 className="font-heading text-5xl md:text-7xl font-bold mb-6">Redefining Elegance</h1>
+          <h1 className="font-heading text-5xl md:text-8xl font-bold mb-8 tracking-tighter">The LuxeSpark Story</h1>
           <div className="w-16 h-1 bg-secondary mx-auto mb-8"></div>
-          <p className="text-gray-400 max-w-2xl mx-auto leading-relaxed text-lg">
-            NJYOT was founded on a singular principle: that bespoke artistry should be accessible to those who celebrate life’s most exquisite moments.
+          <p className="text-gray-400 max-w-2xl mx-auto leading-relaxed text-lg italic font-light">
+            LuxeSpark was founded on a singular principle: that bespoke artistry should be accessible to those who celebrate life’s most exquisite moments.
           </p>
         </div>
       </div>
@@ -24,7 +24,7 @@ export default function AboutPage() {
         <div className="bg-white rounded-[4rem] shadow-2xl p-12 md:p-24 border border-gray-50">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div>
-              <span className="text-[10px] text-primary font-bold uppercase tracking-[0.4em] mb-6 block">The NJYOT Way</span>
+              <span className="text-[10px] text-secondary font-bold uppercase tracking-[0.4em] mb-6 block">The LuxeSpark Way</span>
               <h2 className="font-heading text-4xl md:text-5xl font-bold text-charcoal mb-8 leading-tight">
                 Crafted for Impact, <br /><span className="text-secondary italic">Designed for You.</span>
               </h2>
@@ -43,7 +43,7 @@ export default function AboutPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
                 <div className="absolute bottom-12 left-12 right-12 bg-charcoal/90 backdrop-blur-md p-8 rounded-3xl text-white shadow-2xl">
                   <p className="font-heading text-xl italic mb-4">&quot;Elegance is not about being noticed, it’s about being remembered.&quot;</p>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-secondary">— NJYOT Philosophy</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-secondary">— LuxeSpark Philosophy</p>
                 </div>
               </div>
             </div>
@@ -103,7 +103,7 @@ export default function AboutPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-32 text-center pb-24">
         <div className="relative inline-block">
           <div className="absolute -inset-4 bg-secondary/20 rounded-full blur-2xl animate-pulse"></div>
-          <h2 className="font-heading text-4xl font-bold text-charcoal mb-8 relative">Step Into The World of NJYOT</h2>
+          <h2 className="font-heading text-4xl font-bold text-primary mb-8 relative">Step Into The World of LuxeSpark</h2>
         </div>
         <p className="text-gray-500 max-w-xl mx-auto mb-12 text-lg">
           Join a community of thousands who define their own standard of luxury.

@@ -23,10 +23,10 @@ export default function AdminLoginPage() {
         setError("");
 
         // Simple mock authentication
-        // Default password: njyotadmin
-        if (password === "njyotadmin") {
+        // Default password: luxesparkadmin
+        if (password === "luxesparkadmin") {
             setTimeout(() => {
-                localStorage.setItem("njyot-admin-auth", "true");
+                localStorage.setItem("luxespark-admin-auth", "true");
                 router.push("/admin/dashboard");
             }, 1000);
         } else {
@@ -46,7 +46,7 @@ export default function AdminLoginPage() {
             <div className="w-full max-w-md relative z-10">
                 <div className="text-center mb-10">
                     <span className="text-secondary font-bold uppercase tracking-[0.5em] text-[10px] mb-4 block animate-fade-up">Vault Access</span>
-                    <h1 className="font-heading text-4xl text-white font-bold mb-2">NJYOT Admin</h1>
+                    <h1 className="font-heading text-4xl text-white font-bold mb-2">LuxeSpark Admin</h1>
                     <p className="text-gray-400 text-sm">Enter your master key to manage collections.</p>
                 </div>
 
