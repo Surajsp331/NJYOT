@@ -2,9 +2,11 @@ import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
 import { WishlistProvider } from "@/lib/wishlist-context";
+import { UserProvider } from "@/lib/user-context";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CartSidebar from "@/components/CartSidebar";
+import AuthModal from "@/components/AuthModal";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -29,14 +31,17 @@ export default function RootLayout({ children }) {
       <body className={`${playfair.variable} ${inter.variable} font-body antialiased`}>
         <CartProvider>
           <WishlistProvider>
-            <div className="min-h-screen flex flex-col">
-              <Navbar />
-              <CartSidebar />
-              <main className="flex-1">
-                {children}
-              </main>
-              <Footer />
-            </div>
+            <UserProvider>
+              <div className="min-h-screen flex flex-col">
+                <Navbar />
+                <CartSidebar />
+                <AuthModal />
+                <main className="flex-1">
+                  {children}
+                </main>
+                <Footer />
+              </div>
+            </UserProvider>
           </WishlistProvider>
         </CartProvider>
       </body>
